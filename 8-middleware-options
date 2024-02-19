@@ -10,6 +10,17 @@ const authorize = require('./authorize');
 // app.use('/api', logger) will apply the callback to all routes that begin with /api 
 //app.use([logger, authorize]);
 
+app.use([logger, authorize]);
+
+// static assets
+app.use(express.static('./methods-public'));
+
+//parse form data sent, urlencoded is a built in middlware function used to partse incoming requests with urlencoded payloads based on body parser
+app.use(express.urlencoded({ extended: false}));
+
+//app.use(express.static('./public'));
+app.use(morgan('tiny'));
+
 app.get('/', (req, res) => {
     res.send('Home');
 })

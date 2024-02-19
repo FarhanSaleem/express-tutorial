@@ -1,29 +1,27 @@
-const express = require('express')
+const express = require('express');
 const app = express()
-const logger = require('./logger');
 
-// req => middleware => use
+let { people} = require('./data');
 
-// app use allows express to include common logic to be applied for all routes by setting it once
-// app.use('/api', logger) will apply the callback to all routes that begin with /api 
-app.use('/api', logger);
+//static assets
+app.use(express.static('./methods-public'));
 
-app.get('/', (req, res) => {
-    res.send('Home');
-})
+app.get('/api/people', (req, res) => {
+    res.status(200).json({success: true, data: people})
+});
 
-app.get('/about', (req, res) => {
-    res.send('About');
-})
-
-app.get('/api/products', (req, res) => {
-    res.send('Products');
-})
-
-app.get('/api/items', (req, res) => {
-    res.send('Items');
+app.post('/login', (req, res) => {
+    console.log(req);
+    const { name } = req.body;
+    if (name) {
+        res.status(200).send(`Welcome ${name}`);
+    }
+    
+    res.status(401).send('Unauthorized');
+    
 })
 
 app.listen(3000, () => {
-    console.log('listening on port 3000...')
+    console.log('Server is listening on port 3000....');
 })
+
